@@ -1,0 +1,51 @@
+
+CREATE TABLE [dbo].[IISLogger](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Hour] [nvarchar](50) NOT NULL,
+	[IP] [nvarchar](50) NOT NULL,
+	[Domain] [nvarchar](50) NOT NULL,
+	[TimeoutCount] [int] NOT NULL,
+	[ClinetErrorCount] [int] NOT NULL,
+	[ServerErrorCount] [int] NOT NULL,
+	[TotalCount] [int] NOT NULL
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_BulkTestTable_Hour]  DEFAULT ('') FOR [Hour]
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_BulkTestTable_IP]  DEFAULT ('') FOR [IP]
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_BulkTestTable_Domain]  DEFAULT ('') FOR [Domain]
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_BulkTestTable_TimeoutCount]  DEFAULT ((0)) FOR [TimeoutCount]
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_BulkTestTable_ErrorCount]  DEFAULT ((0)) FOR [ClinetErrorCount]
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_IISLogger_ServerErrorCount]  DEFAULT ((0)) FOR [ServerErrorCount]
+GO
+
+ALTER TABLE [dbo].[IISLogger] ADD  CONSTRAINT [DF_BulkTestTable_TotalCount]  DEFAULT ((0)) FOR [TotalCount]
+GO
+
+
+CREATE TABLE [dbo].[IISLoggerDetail](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LogDate] [date] NOT NULL,
+	[LogTime] [time](7) NOT NULL,
+	[url] [nvarchar](100) NULL,
+	[State] [int] NULL,
+	[HourId] [nvarchar](50) NOT NULL,
+	[CreateTime] [datetime] NOT NULL,
+ CONSTRAINT [PK_IISLoggerDetail] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
