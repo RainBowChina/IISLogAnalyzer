@@ -1,0 +1,303 @@
+﻿@{
+    _Layout = "Layout.cshtml";    
+}
+	
+			<div id="content" class="span10">
+			<!-- start: Content -->
+			
+
+			    <div>
+			        <ul class="breadcrumb">
+			            <li>
+			                <a href="#">首页</a> <span class="divider">/</span>
+			            </li>
+			            <li>
+			                <a href="#">IIS日志分析</a>
+			            </li>
+			        </ul>
+			    </div>
+			    <div class="box-content">			     
+			                	<div class="control-group">							  
+							  <div class="controls">
+								 日期：<input type="text" class="input-xlarge datepicker" style="width: 220px;height: 30px;" readonly="readonly" id="date01" value="@Model.StartDate" > &nbsp;至&nbsp; <input type="text" class="input-xlarge datepicker" style="width: 220px;height: 30px;" readonly="readonly" id="date02" value="@Model.StartDate" > <br/> IP:&nbsp;&nbsp;&nbsp; <select id="selectIp">
+								     @{
+                                         foreach (var ip in @Model.Ips)
+								         {
+								             if (@Model.SelectedIp == ip)
+								             {
+								                  <option value="@ip" selected="selected">@ip</option>
+								             }
+								             else
+								             {
+								                 <option value="@ip">@ip</option>
+								             }								               	
+                                         }
+								       }                                                                                                                    
+                                   								
+								  </select>&nbsp;域名：<select id="selectDomain">
+								     @{
+                                         foreach (var domain in @Model.Domains)
+								         {
+                                             if (@Model.SelectedDomain == domain)
+								             {
+								                  <option value="@domain" selected="selected">@domain</option>	
+								             }
+								             else
+								             {
+								                    <option value="@domain">@domain</option>	
+								             }								            
+                                         }
+								       }                                                                                                                    
+                                   								
+								  </select>&nbsp;<input id="search" class="btn" style="margin-bottom: 10px;" type="button" value="查询"/>
+							  </div>
+							</div>			          
+			    </div>
+
+			<div class="row-fluid sortable">
+				
+			    @*<div class="box">
+					<div class="box-header">
+						<h2><i class="icon-list-alt"></i><span class="break"></span>图表展示</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="icon-wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="icon-chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="icon-remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<div id="sincos"  class="center" style="height:300px;" ></div>
+						<p id="hoverdata">Mouse position at (<span id="x">0</span>, <span id="y">0</span>). <span id="clickdata"></span></p>
+					</div>
+				</div>*@
+                <div class="box span12">
+					<div class="box-header">
+						<h2><i class="icon-th"></i> 汇总列表</h2>
+					</div>
+					<div class="box-content">
+						<ul class="nav tab-menu nav-tabs" id="myTab">							
+							<li class=""><a href="#hour">按小时汇总</a></li>
+							<li class="active"><a href="#day">按每天汇总</a></li>
+						</ul>
+						 
+						<div id="myTabContent" class="tab-content">							
+							<div class="tab-pane" id="day">
+								<table class="table table-bordered table-striped table-condensed">
+							  <thead>
+								  <tr>
+									  <th>日期</th>
+									  <th>IP</th>
+									  <th>域名</th>
+								      <th>超时请求数</th>      
+								      <th>错误请求4**数</th>
+                                      <th>错误请求5**数</th>       
+                                       <th>请求总数</th>                                 
+								  </tr>
+							  </thead>   
+						    <tbody> 
+						        @{
+                                    foreach (var item in @Model.DayList)
+                                    {
+						                <tr>
+						            <td>@item.Day</td>						         
+						            <td class="center">@item.IP</td>
+						            <td class="center">
+						               @item.Domain 
+						            </td>      
+                                    <td class="center">
+						               @item.TimeoutCount 
+                                    </td>      
+                                    <td class="center">
+						               @item.ClinetErrorCount 
+                                    </td>    
+                                    <td class="center">
+						               @item.ServerErrorCount 
+                                    </td>
+						            <td class="center">
+						               @item.TotalCount 
+						            </td>                                 
+						                </tr> 
+                                    }
+						        }						       
+							                     
+						    </tbody>
+						 </table>  
+						 <div class="pagination pagination-centered">
+						  <ul>
+							<li><a href="#">Prev</a></li>
+							<li class="active">
+							  <a href="#">1</a>
+							</li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">Next</a></li>
+						  </ul>
+						</div>
+							</div>
+							<div class="tab-pane active" id="hour">
+								<table class="table table-bordered table-striped table-condensed">
+							  <thead>
+								  <tr>
+									  <th>小时</th>
+									  <th>IP</th>
+									  <th>域名</th>
+								      <th>超时请求数</th>      
+								      <th>错误请求4**数</th>
+                                      <th>错误请求5**数</th>       
+                                       <th>请求总数</th>                                 
+								  </tr>
+							  </thead>   
+						    <tbody> 
+						        @{
+                                    foreach (var item in @Model.List)
+                                    {
+						                <tr>
+						            <td>@item.Hour</td>						         
+						            <td class="center">@item.IP</td>
+						            <td class="center">
+						               @item.Domain 
+						            </td>      
+                                    <td class="center">
+						               @item.TimeoutCount 
+                                    </td>      
+                                    <td class="center">
+						               @item.ClinetErrorCount 
+                                    </td>    
+                                    <td class="center">
+						               @item.ServerErrorCount 
+                                    </td>
+						            <td class="center">
+						               @item.TotalCount 
+						            </td>                                 
+						                </tr> 
+                                    }
+						        }						       
+							                     
+						    </tbody>
+						 </table>  
+						 <div class="pagination pagination-centered">
+						  <ul>
+							<li><a href="#">Prev</a></li>
+							<li class="active">
+							  <a href="#">1</a>
+							</li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">Next</a></li>
+						  </ul>
+						</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<div class="row-fluid sortable">	
+				<!--/span-->
+			</div><!--/row-->
+		
+					<!-- end: Content -->
+			</div><!--/#content.span10-->
+       </div>
+<script type="text/javascript">
+    //function charts(data) {
+
+    //    /* ---------- Chart with points ---------- */
+    //    if ($("#sincos").length) {
+    //        var sin = [], cos = [],tag=[];          
+    //        for (var i = 0; i < data.ErrorRequstArray.length; i++) {
+    //            sin.push([i,data.ErrorRequstArray[i]]);               
+    //            cos.push([i, data.TimeoutRequestArray[i]]);
+    //            tag.push([i,data.ErrorInnerArray[i]]);
+    //        }
+
+    //        var plot = $.plot($("#sincos"),
+    //               [{ data: sin, label: "4**错误请求数" }, { data: tag, label: "5**错误请求数" }, { data: cos, label: "超时请求数" }], {
+    //                   series: {
+    //                       lines: {
+    //                           show: true,
+    //                           lineWidth: 2,
+    //                       },
+    //                       points: { show: true },
+    //                       shadowSize: 2
+    //                   },
+    //                   grid: {
+    //                       hoverable: true,
+    //                       clickable: true,
+    //                       tickColor: "#dddddd",
+    //                       borderWidth: 0
+    //                   },
+    //                   colors: ["#FA5833", "#2FABE9"]
+    //               });
+
+    //        function showTooltip(x, y, contents) {
+    //            $('<div id="tooltip">' + contents + '</div>').css({
+    //                position: 'absolute',
+    //                display: 'none',
+    //                top: y + 5,
+    //                left: x + 5,
+    //                border: '1px solid #fdd',
+    //                padding: '2px',
+    //                'background-color': '#dfeffc',
+    //                opacity: 0.80
+    //            }).appendTo("body").fadeIn(200);
+    //        }
+
+    //        var previousPoint = null;
+    //        $("#sincos").bind("plothover", function (event, pos, item) {
+    //            $("#x").text(pos.x.toFixed(0));
+    //            $("#y").text(pos.y.toFixed(0));
+
+    //            if (item) {
+    //                if (previousPoint != item.dataIndex) {
+    //                    previousPoint = item.dataIndex;
+
+    //                    $("#tooltip").remove();
+    //                    var x = item.datapoint[0].toFixed(0),
+	//						y = item.datapoint[1].toFixed(0);
+
+    //                    showTooltip(item.pageX, item.pageY,
+	//							x+"点的"+item.series.label+" 为" + y+"个");
+    //                }
+    //            }
+    //            else {
+    //                $("#tooltip").remove();
+    //                previousPoint = null;
+    //            }
+    //        });
+
+
+
+    //        $("#sincos").bind("plotclick", function (event, pos, item) {
+    //            if (item) {
+    //                $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+    //                plot.highlight(item.series, item.datapoint);
+    //            }
+    //        });
+    //    }
+    //}
+
+    $("#search").bind("click", function() {
+        var date = $("#date01").val();
+        var ip = $("#selectIp").val();
+        var domain = $("#selectDomain").val();
+        window.location.href = "/?date="+date+"&ip="+ip+"&domain="+domain;
+    });
+
+    $(document).ready(function () {
+
+        var ip = $("#selectIp").val();
+        var domain = $("#selectDomain").val();
+        $.get("/api/products?" + "sdate=@Model.StartDate" + "&ip=" + ip + "&domain=" + domain+"&edate=@Model.EndDate", function (data) {          
+         //   charts(data);
+        });
+        $('.datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+        /* ---------- Tabs ---------- */
+        $('#myTab a:first').tab('show');
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+   
+</script>
